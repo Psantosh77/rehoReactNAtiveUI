@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Picker, DatePickerIOS, Button, TouchableOpacity, Modal, TextInput, ScrollView, Alert } from 'react-native'
-import Card from '../../component/card'
-import ApiService from '../../utils/Api/apiCall'
+import Card from '../../../component/card'
+import ApiService from '../../../utils/Api/apiCall'
 import moment from 'moment'
-import { fbBlueColor, white } from '../../utils/Api/constant/color'
+import { fbBlueColor, white } from '../../../utils/Api/constant/color'
 import { TextInputMask } from 'react-native-masked-text'
 import CardSigleView from './card'
-import Dropdown from '../../component/dropdown'
+import Dropdown from '../../../component/dropdown'
 
 const Rent = ({ route, navigation }) => {
     const { allotedTo, roomNumber } = route.params
@@ -62,7 +62,7 @@ const Rent = ({ route, navigation }) => {
     };
 
     const handleSelectRoom = (option) => {
-        console.log("option" , option)
+       
         setInputValue({ ...inputValue, billMonth:option.value })
     };
 
@@ -95,7 +95,7 @@ const Rent = ({ route, navigation }) => {
         )
     }
 
-    console.log(inputValue)
+
 
     return (
         <View style={styles.container}>

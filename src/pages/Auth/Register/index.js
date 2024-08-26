@@ -1,18 +1,23 @@
 import React, { useState } from 'react'
 import { ActivityIndicator, Alert, Button, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
-import InputText from '../../../component/input'
+import InputText from '../../../../component/input'
 import { Image } from 'react-native'
 import { themeColor } from '../../../styles/color'
-import ApiService from '../../../utils/Api/apiCall'
+import ApiService from '../../../../utils/Api/apiCall'
+import { validateField } from '../../../../utils/Helper/validation'
+import { Toast } from 'toastify-react-native'
 
 
-const Register = () => {
-  console.log("rEGISTER PAGE")
+const Separator = () => <View style={CardStyles.separator} />;
+
+const Register = ({navigation}) => {
+
 
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: '',
+    confirmPassword: "",
 
   });
 
@@ -32,30 +37,7 @@ const Register = () => {
     ],
   };
 
-  const validateField = (value, validations) => {
-    for (let validation of validations) {
-      const { type, message, ...params } = validation;
-  
-      if (type === 'required' && !value.trim()) {
-        return message || 'This field is required';
-      }
-  
-      if (type === 'email' && value && !/\S+@\S+\.\S+/.test(value)) {
-        return message || 'Invalid email address';
-      }
-  
-      if (type === 'minLength' && value.length < params.minLength) {
-        return message || `Must be at least ${params.minLength} characters long`;
-      }
-  
-      if (type === 'numeric' && isNaN(value)) {
-        return message || 'Must be a number';
-      }
-  
-      // Add more validation types as needed
-    }
-    return null; // No errors found
-  };
+
 
   const validateForm = () => {
     const newErrors = {};
@@ -78,31 +60,28 @@ const Register = () => {
   const handleSubmit = () => {
     if (validateForm()) {
 
-      console.log("formData" ,formData)
+   
       ApiService.request({
         method: 'POST',
         endpoint: 'auth/',
         payload: formData,
-        onSuccess: (response) => {  
-          Alert.alert('Form Submitted', JSON.stringify(response.message, null, 2));
+        onSuccess: (response) => {
+          navigation.navigate('Login')
+          Toast.info(response.message)
+          console.log(response.message)
         },
         onError: (error) => {
-            // Handle error
-            console.log('error', error)
-        } 
-    }
-    )
-      
-      
+          // Handle error
+          console.log('error', error)
+        }
+      }
+      )
+
+
     } else {
       Alert.alert('Validation Error', 'Please fix the errors in the form');
     }
   };
-
-
-
-
-  console.log(formData, errors)
 
   return (
     <SafeAreaView>
@@ -115,46 +94,57 @@ const Register = () => {
           PlaceholderContent={<ActivityIndicator />}
           resizeMode="contain"
         />
-
         <View style={CardStyles.formContaine}>
-
-
           <Text style={CardStyles.Heading}>Register</Text>
           <ScrollView style={CardStyles.ScrollView}>
             <InputText
-              //lable="Full Name"
+              lable="Full Name"
               placeHolder="Enter Full Name"
-             
+
               value={formData.fullName}
               onChangeText={(value) => handleInputChange('fullName', value)}
-              errorMsg = {errors.fullName}
+              errorMsg={errors.fullName}
             />
 
             <InputText
-              // lable="Full Name"
+              lable="Email"
               placeHolder="Enter Email Id"
-              
+
               value={formData.email}
               onChangeText={(value) => handleInputChange('email', value)}
-              errorMsg = {errors.email}
+              errorMsg={errors.email}
               keyboardType="email-address"
             />
 
             <InputText
-              // lable="Full Name"
+              lable="Password"
               placeHolder="Enter password"
               secureTextEntry
               value={formData.password}
               onChangeText={(value) => handleInputChange('password', value)}
-              errorMsg = {errors.password}
+              errorMsg={errors.password}
             />
 
+            <InputText
+              lable="Confirm Password"
+              placeHolder="Enter password"
+              secureTextEntry
+              value={formData.confirmPassword}
+              onChangeText={(value) => handleInputChange('confirmPassword', value)}
+              errorMsg={errors.password}
+            />
           </ScrollView>
-          <Button style={CardStyles.button} title="Submit" onPress={handleSubmit} />
+          <Button style={CardStyles.button} title="Submit" onPress={handleSubmit}
+            color={themeColor} />
+
+
+          <View style={CardStyles.Alcontainer}>
+          <Separator />
+            <Text onPress={() => navigation.navigate('Login')}>Alreay Register? sign in</Text>
+          </View>
 
         </View>
       </View>
-
     </SafeAreaView>
 
   )
@@ -172,13 +162,14 @@ const CardStyles = StyleSheet.create({
     alignItems: "center"
   },
   button: {
-    padding: 10,
+    padding: 20,
     margin: 10,
-    backgroundColor: themeColor
+    backgroundColor: themeColor,
+    color: themeColor
   },
   formContaine: {
     backgroundColor: "#c9a07a",
-  
+
     width: "95%",
     padding: 10,
     borderRadius: 10,
@@ -186,16 +177,28 @@ const CardStyles = StyleSheet.create({
   },
   item: {
     color: "red",
-    width: "50px",
-    height: "50px"
+    width: 50,
+    height: 50
   },
   Heading: {
-    fontSize: 50,
+    fontSize: 30,
     textAlign: "center",
     color: themeColor
   },
-  ScrollView:{
+  ScrollView: {
     marginTop: 20
-  }
+  },
+  Alcontainer: {
+    display: "flex",
+    justifyContent: "center",
+    margin: "auto",
+    alignItems: "center",
+    padding: 20,
+  },
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: '#737373',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
 
 })

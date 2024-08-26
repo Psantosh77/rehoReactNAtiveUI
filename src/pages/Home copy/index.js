@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Picker, Button } from 'react-native'
 
-import Dropdown from '../../component/dropdown'
-import ApiService from '../../utils/Api/apiCall'
-import { fbBlueColor } from '../../utils/Api/constant/color'
+import Dropdown from '../../../component/dropdown'
+import ApiService from '../../../utils/Api/apiCall'
+import { fbBlueColor } from '../../../utils/Api/constant/color'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Home = ({ navigation }) => {
     const [selectedOption, setSelectedOption] = useState('');
@@ -13,15 +14,19 @@ const Home = ({ navigation }) => {
 
 
 
-    console.log("roomData", selectedOptionRoom)
+  
 
-    const handleSelect = (option) => {
+    const handleSelect = async (option) => {
         setSelectedOption(option);
+        const jsonValue = await AsyncStorage.getItem('accessToken');
+        console.log("jsonValue" , JSON.parse(jsonValue))
     };
 
     const handleSelectRoom = (option) => {
         setSelectedOptionRoom(option);
     };
+
+    
 
     useEffect(() => {
         ApiService.request({
@@ -60,7 +65,7 @@ const Home = ({ navigation }) => {
     }, [selectedOption])
 
 
-console.log(HouseData)
+
 
     return (
         <View style={styles.container}>

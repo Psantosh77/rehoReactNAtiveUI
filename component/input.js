@@ -1,15 +1,13 @@
 
 import React, { useState } from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import { themeColor } from '../styles/color'
+// import Icon from 'react-native-vector-icons/FontAwesome'
+import { themeColor } from '../src/styles/color'
 
 const InputText = (props) => {
   const { lable, placeHolder, onChangeText, errorMsg, ...rest } = props
 
   const [input, setInput] = useState()
-
-  console.log(input)
 
   return (
     <View style={CardStyles.inputContainer}>
@@ -23,8 +21,8 @@ const InputText = (props) => {
       </Text> */}
       <TextInput
         style={CardStyles.input}
-        placeholder={placeHolder && placeHolder}
-        // leftIcon={{ type: 'font-awesome', name: 'comment' }}
+        //placeholder={placeHolder}
+       leftIcon={{ type: 'font-awesome', name: 'comment' }}
         onChangeText={(value) => onChangeText && onChangeText(value)}
         {...rest}
       />
@@ -38,10 +36,10 @@ export default InputText
 
 const CardStyles = StyleSheet.create({
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderColor: '#ccc',
-    borderWidth: 1,
+    flexDirection: 'column',
+
+   // borderColor: '#ccc',
+    //borderWidth: 1,
     borderRadius: 5,
     marginBottom: 15,
 
@@ -50,10 +48,12 @@ const CardStyles = StyleSheet.create({
     flex: 1,
     height: 40,
     paddingHorizontal: 10,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    width:"100%",
+    color:themeColor
   },
   label: {
-    fontSize: 20,
+    fontSize: 15,
     marginBottom: 5,
     color: themeColor
   },

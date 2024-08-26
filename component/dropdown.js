@@ -19,7 +19,6 @@ const Dropdown = ({ options, onSelect, defaultText, style, renderOption, labelKe
     
 
 
-    console.log()
     return (
         <View style={[styles.container, style]}>
             <TouchableOpacity onPress={() => setShowDropdown(true)}>
