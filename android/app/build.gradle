@@ -94,6 +94,12 @@ android {
     }
 
 
+    sourceSets {
+        main {
+            assets.srcDirs = ['src/main/assets/fonts']
+        }
+    }
+
 
     signingConfigs {
         debug {
@@ -148,3 +154,4 @@ afterEvaluate {
     }
 }
 
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")

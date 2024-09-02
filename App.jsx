@@ -10,6 +10,10 @@ import Login from './src/pages/Auth/SignIn';
 import ToastManager from 'toastify-react-native';
 import { Text } from 'react-native';
 
+
+import { MD3LightTheme as DefaultTheme, Icon, MD3Colors, PaperProvider } from 'react-native-paper';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 const AuthStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -22,38 +26,44 @@ const AuthStackNavigator = () => (
 
 const HomeStackNavigator = () => {
   const { logout } = useAuth();
-  return(
-  <AuthStack.Navigator initialRouteName="Home"
-    screenOptions={({ navigation }) => ({
-      headerLeft: () => (
-        // <Ionicons
-        //   name="menu"
-        //   size={24}
-        //   color="black"
-        //   style={{ marginLeft: 15 }}
-        //   onPress={() => navigation.openDrawer()}
-        // />
-        <Text  style={{ marginLeft: 15 , marginRight: 15 }}  onPress={() => navigation.openDrawer()}>M</Text>
-      ),
-      headerRight: () => (
-        // <Ionicons
-        //   name="menu"
-        //   size={24}
-        //   color="black"
-        //   style={{ marginLeft: 15 }}
-        //   onPress={() => navigation.openDrawer()}
-        // />
-        <Text  style={{ marginLeft: 15 , marginRight: 15 }}  onPress={logout}>Logout</Text>
-      ),
-    })}>
-    <AuthStack.Screen name="Home" component={Home} />
-    <AuthStack.Screen name="Rent" component={Rent} />
-  </AuthStack.Navigator>
-)};
+  return (
+    <AuthStack.Navigator initialRouteName="Home"
+      screenOptions={({ navigation }) => ({
+        headerLeft: () => (
+          <Text
+            onPress={() => navigation.openDrawer()}
+            style={{ marginRight: 15 }}
+          >
+
+            <Icon
+              source="menu"
+              color={MD3Colors.error50}
+              size={20}
+            />
+          </Text>
+
+          // <Text style={{ marginLeft: 15, marginRight: 15 }} onPress={() => navigation.openDrawer()}>M</Text>
+        ),
+        headerRight: () => (
+          // <Ionicons
+          //   name="menu"
+          //   size={24}
+          //   color="black"
+          //   style={{ marginLeft: 15 }}
+          //   onPress={() => navigation.openDrawer()}
+          // />
+          <Text style={{ marginLeft: 15, marginRight: 15 }} onPress={logout}>Logout</Text>
+        ),
+      })}>
+      <AuthStack.Screen name="Home" component={Home} />
+      <AuthStack.Screen name="Rent" component={Rent} />
+    </AuthStack.Navigator>
+  )
+};
 
 const DrawerNavigator = () => (
   <Drawer.Navigator initialRouteName="HomeStack">
-    <Drawer.Screen name="HomeStack" component={HomeStackNavigator} options={{ headerShown: false  , title:"Home"}} />
+    <Drawer.Screen name="HomeStack" component={HomeStackNavigator} options={{ headerShown: false, title: "Home" }} />
     <Drawer.Screen name="Rent" component={Rent} />
   </Drawer.Navigator>
 );
@@ -69,14 +79,31 @@ const AppNavigator = () => {
   );
 };
 
+
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: 'tomato',
+    secondary: 'yellow',
+  },
+};
+
+
+const queryClient = new QueryClient();
+
 const App = () => (
-  <AuthProvider>
-    <AppNavigator />
-  </AuthProvider>
+  <PaperProvider theme={theme}>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <AppNavigator />
+      </AuthProvider>
+    </QueryClientProvider>
+  </PaperProvider>
 );
 
 export default App;
-
 
 
 
